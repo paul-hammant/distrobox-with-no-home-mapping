@@ -100,7 +100,8 @@ non_interactive=0
 # We're not using "realpath" here so that symlinks are not resolved this way
 # "realpath" would break situations like Nix or similar symlink based package
 # management.
-distrobox_enter_path="$(cd "$(dirname "$0")" && pwd)/distrobox-enter"
+#distrobox_enter_path="$(cd "$(dirname "$0")" && pwd)/distrobox-enter"
+distrobox_enter_path="$HOME/distrobox-enter"
 dryrun=0
 headless=0
 # If the user runs this script as root in a login shell, set rootful=1.
@@ -421,7 +422,7 @@ generate_enter_command()
 	fi
 
 	result_command="${result_command}
-		--workdir=${workdir}"
+		--workdir=/home"
 	result_command="${result_command}
 		--env=CONTAINER_ID=${container_name}"
 	result_command="${result_command}

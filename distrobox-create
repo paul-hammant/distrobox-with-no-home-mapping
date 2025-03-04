@@ -709,8 +709,7 @@ generate_create_command()
 		--volume /tmp:/tmp:rslave
 		--volume \"${distrobox_entrypoint_path}\":/usr/bin/entrypoint:ro
 		--volume \"${distrobox_export_path}\":/usr/bin/distrobox-export:ro
-		--volume \"${distrobox_hostexec_path}\":/usr/bin/distrobox-host-exec:ro
-		--volume \"${container_user_home}\":\"${container_user_home}\":rslave"
+		--volume \"${distrobox_hostexec_path}\":/usr/bin/distrobox-host-exec:ro"
 
 	# Due to breaking change in https://github.com/opencontainers/runc/commit/d4b670fca6d0ac606777376440ffe49686ce15f4
 	# now we cannot mount /:/run/host as before, as it will try to mount RO partitions as RW thus breaking things.
@@ -858,7 +857,7 @@ generate_create_command()
 	# If we have a custom home to use,
 	#	1- override the HOME env variable
 	#	2- export the DISTROBOX_HOST_HOME env variable pointing to original HOME
-	# 	3- mount the custom home inside the container.
+	# 	3- set the custom home inside the container.
 	if [ -n "${container_user_custom_home}" ]; then
 		if [ ! -d "${container_user_custom_home}" ]; then
 			if ! mkdir -p "${container_user_custom_home}"; then
@@ -868,8 +867,7 @@ generate_create_command()
 		fi
 		result_command="${result_command}
 			--env \"HOME=${container_user_custom_home}\"
-			--env \"DISTROBOX_HOST_HOME=${container_user_home}\"
-			--volume \"${container_user_custom_home}:${container_user_custom_home}:rslave\""
+			--env \"DISTROBOX_HOST_HOME=${container_user_home}\""
 	fi
 
 	# Mount also the /var/home dir on ostree based systems
